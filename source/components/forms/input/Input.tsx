@@ -203,7 +203,7 @@ export const InputRenderer = forwardRef<any, InputRendererProps>(
         )}
 
         {!hideErrorMessage && errorMessage && (
-          <FormHelperText className="helper">{hintAsError ? hint : errorMessage}</FormHelperText>
+          <FormHelperText>{hintAsError ? hint : errorMessage}</FormHelperText>
         )}
       </FormControl>
     );
