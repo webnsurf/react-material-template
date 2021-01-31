@@ -1,0 +1,62 @@
+@import '../../../variables';
+
+$transitionSpeed: 225ms;
+$widthOpen: 240px;
+$widthClosedPartial: 50px;
+$toggleHeight: 40px;
+
+.sec-sidebar {
+  z-index: 1059;
+  flex-shrink: 0;
+  height: calc(100vh - 45px);
+  transition: width $transitionSpeed $transition;
+  overflow: hidden;
+  width: 0;
+
+  button.toggle {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    transition: width $transitionSpeed $transition;
+    width: 0;
+    color: #fff;
+    background: rgba($color: #fff, $alpha: .1);
+    border-radius: 0;
+    padding: 0;
+    min-width: auto;
+    height: $toggleHeight;
+
+    .chevron {
+      transition: transform $transitionSpeed $transition;
+    }
+
+    &:hover {
+      background: rgba($color: #fff, $alpha: .2);
+    }
+  }
+
+  .inner {
+    border-radius: 0;
+    height: 100%;
+    width: $widthOpen;
+    background: #222;
+    padding-bottom: $toggleHeight;
+    color: #fff;
+  }
+
+  &.partial {
+    width: $widthClosedPartial;
+
+    button.toggle {
+      width: $widthClosedPartial;
+    }
+  }
+
+  &.open {
+    width: $widthOpen;
+
+    button.toggle {
+      width: $widthOpen;
+    }
+  }
+}

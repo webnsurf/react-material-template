@@ -1,0 +1,49 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  - master
+
+resources:
+  - repo: self
+
+variables:
+  containerRegistry: 'WnF Container Registry'
+  image: 'webnsurf-react/web'
+  dockerfilePath: '$(Build.SourcesDirectory)/pipelines/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+jobs:
+  - job: build
+    displayName: Build and push Docker image
+    pool: Default
+    steps:
+      - task: Docker@2
+        displayName: Build the image
+        inputs:
+          command: build
+          dockerfile: $(dockerfilePath)
+          buildContext: $(Build.SourcesDirectory)
+          containerRegistry: $(containerRegistry)
+          repository: $(image)
+          tags: |
+            $(tag)
+      - task: Docker@2
+        displayName: Push the image to WnF CR
+        inputs:
+          command: push
+          repository: $(image)
+          containerRegistry: $(containerRegistry)
+          tags: |
+            $(tag)
+      - task: PublishBuildArtifacts@1
+        displayName: Upload docker directory as artifact
+        inputs:
+          pathToPublish: '$(Build.SourcesDirectory)/pipelines/'
+          artifactName: pipelines
+      - task: PublishBuildArtifacts@1
+        displayName: Upload .env.example as artifact
+        inputs:
+          pathToPublish: '$(Build.SourcesDirectory)/.env.example'
+          artifactName: environment

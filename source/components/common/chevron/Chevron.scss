@@ -1,0 +1,25 @@
+@import '../../../variables';
+
+$transitionSpeed: 225ms;
+
+.sec-chevron {
+  transition: transform $transitionSpeed $transition;
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 24px;
+  width: 24px;
+
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  &.up {
+    transform: rotateX(180deg);
+  }
+
+  &.left {
+    transform: rotateY(180deg);
+  }
+}

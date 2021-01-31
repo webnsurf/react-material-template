@@ -1,0 +1,25 @@
+.sec-select {
+  width: 100%;
+
+  .MuiSelect-selectMenu:focus {
+    background-color: initial;
+  }
+
+  .MuiSelect-root {
+    padding-left: 4px;
+  }
+
+  &.disabled {
+    .MuiInput-underline.Mui-focused:after {
+      transform: scale(0);
+    }
+  }
+}
+
+.sec-select-autocomplete-loading {
+  display: flex;
+
+  .data-spinner {
+    margin-right: 10px;
+  }
+}

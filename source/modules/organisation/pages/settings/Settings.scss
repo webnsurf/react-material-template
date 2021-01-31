@@ -1,0 +1,51 @@
+.sec-settings-page {
+  display: flex;
+
+  .settings-sidebar {
+    .sidebar-content {
+      padding: 5px 0;
+
+      a.link {
+        display: block;
+
+        button {
+          padding: 6px 10px;
+          border-radius: 0;
+          justify-content: flex-start;
+          color: #fff;
+          width: 100%;
+
+          .icon {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            width: 30px;
+            margin-right: 10px;
+          }
+
+          &:hover {
+            background: rgba($color: #fff, $alpha: 0.1);
+          }
+        }
+
+        &.active {
+          button {
+            background: rgba($color: #fff, $alpha: 0.05);
+
+            &:hover {
+              background: rgba($color: #fff, $alpha: 0.1);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main-content {
+    position: relative;
+    box-sizing: border-box;
+    width: calc(100% - 240px);
+    padding: 15px;
+    flex: 1;
+  }
+}

@@ -1,0 +1,47 @@
+@import '../../../../variables';
+
+.sec-modal.sec-prompt {
+  .modal-heading {
+    padding: 10px 15px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .modal-close {
+    display: none;
+  }
+
+  .modal-content {
+    padding: 0;
+
+    .prompt-message {
+      text-align: center;
+      padding: 25px 15px 10px 15px;
+
+      .error {
+        color: $errorTextColor;
+        font-weight: 500;
+      }
+    }
+  }
+
+  &.fade-enter {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.fade-enter-active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &.fade-exit {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &.fade-exit-active {
+    visibility: hidden;
+    opacity: 0;
+  }
+}

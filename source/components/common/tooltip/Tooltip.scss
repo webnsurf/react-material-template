@@ -1,0 +1,9 @@
+@import '/source/scss-variables/colors';
+
+.sec-with-tooltip {
+  &.tooltip-link {
+    color: $primary;
+    display: inline;
+    cursor: pointer;
+  }
+}

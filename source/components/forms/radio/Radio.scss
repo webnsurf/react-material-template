@@ -1,0 +1,50 @@
+@import '/source/scss-variables/colors';
+
+.sec-radio {
+  .group {
+    display: flex;
+    flex-direction: row;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin: 0 0 10px 0;
+  }
+
+  .MuiFormControlLabel-root {
+    align-items: flex-start;
+
+    .MuiRadio-root {
+      margin: -5px 0;
+    }
+
+    .MuiFormControlLabel-label {
+      padding-top: 5px;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+    }
+  }
+
+  &.block-list {
+    .group {
+      display: block;
+
+      label {
+        display: flex;
+      }
+    }
+  }
+
+  &.has-error {
+    .MuiRadio-root {
+      // color: $error;
+    }
+
+    .group {
+      label {
+        // color: $error;
+      }
+    }
+  }
+}

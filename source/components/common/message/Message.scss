@@ -1,0 +1,10 @@
+.sec-message {
+  transition-property: height;
+  transition-duration: 200ms;
+  text-align: left;
+  overflow: hidden;
+
+  .inner {
+    width: 100%;
+  }
+}

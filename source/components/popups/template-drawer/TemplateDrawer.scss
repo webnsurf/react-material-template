@@ -1,0 +1,29 @@
+.ox-availability-config {
+  padding: 60px 70px 20px;
+  width: 700px;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  section {
+    margin-bottom: 10px;
+  }
+
+  .end-date {
+    grid-column: 2/4;
+  }
+
+  .weekday-selector {
+    width: 100%;
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, auto));
+    }
+  }
+
+  .appt-type {
+    margin-bottom: 10px;
+  }
+}

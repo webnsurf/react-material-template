@@ -1,0 +1,42 @@
+@import '../../../../../variables';
+
+.sec-organisation-users {
+  $maxPadding: 8px;
+
+  .table-cell-image {
+    $imageSize: 40px;
+
+    padding-bottom: $maxPadding;
+    padding-top: $maxPadding;
+    width: $imageSize;
+  }
+
+  .table-cell-role {
+    padding-bottom: $maxPadding;
+    padding-top: $maxPadding;
+    position: relative;
+    width: 150px;
+
+    &.with-delete {
+      width: 200px;
+      padding-right: 40px;
+
+      .delete {
+        position: absolute;
+        right: 0;
+        top: 12px;
+      }
+    }
+  }
+
+  .add-user-button-wrapper {
+    margin-top: 25px;
+    text-align: center;
+  }
+}
+
+.sec-add-user {
+  .field {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,83 @@
+@import '/source/scss-variables/colors';
+
+.sec-button {
+  .MuiButton-label {
+    text-transform: none;
+  }
+
+  &.MuiButton-text {
+    line-height: inherit;
+  }
+
+  &:not(.simple) {
+    &.text {
+      height: auto;
+      padding: 0 5px;
+    }
+  }
+
+  &.disabled.Mui-disabled {
+    color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+    pointer-events: initial !important;
+
+    &:not(.MuiButton-text) {
+      background-color: rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  &.simple {
+    background: none;
+  }
+
+  &.simple-link {
+    color: $primary;
+    display: inline;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.sec-icon-button {
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+
+  .label {
+    padding: 0 5px;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+}
+
+a.sec-icon-button,
+button.sec-icon-button,
+label.sec-icon-button > button {
+  text-align: center;
+  border-radius: 50%;
+  min-width: auto;
+  padding: 5px;
+
+  &:hover {
+    background-color: rgba(129, 119, 157, 0.04);
+  }
+
+  &[disabled] {
+    cursor: default;
+    pointer-events: initial;
+  }
+}
+
+label.sec-icon-button.disabled > button {
+  cursor: default;
+  pointer-events: initial;
+}

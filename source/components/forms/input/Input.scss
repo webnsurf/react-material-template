@@ -1,0 +1,51 @@
+@import '/source/scss-variables/colors';
+
+.sec-input {
+  width: 100%;
+
+  input,
+  textarea {
+    line-height: 1.2;
+    height: auto;
+  }
+
+  button.icon {
+    padding: 4px;
+  }
+
+  .helper {
+    font-size: 12px;
+    color: $secondaryText;
+    margin-top: 5px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: $secondaryText;
+    opacity: 1; /* Firefox */
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: $secondaryText;
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $secondaryText;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+  }
+
+  .MuiInputAdornment-positionStart {
+    margin-right: 4px;
+  }
+
+  .MuiInputAdornment-positionEnd {
+    margin-left: 4px;
+  }
+}

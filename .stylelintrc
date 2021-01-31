@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss"
+  ],
+  "ignoreFiles": ["**/*.ts", "**/*.tsx"],
+  "rules": {
+    "indentation": 2,
+    "color-hex-case": null,
+    "color-hex-length": null,
+    "selector-pseudo-element-colon-notation": null,
+    "number-leading-zero": null
+  }
+}

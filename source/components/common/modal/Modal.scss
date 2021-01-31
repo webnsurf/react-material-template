@@ -1,0 +1,140 @@
+$borderRadius: 5px;
+
+.sec-modal {
+  padding: 10px;
+  text-align: center;
+  overflow: auto;
+
+  .MuiBackdrop-root {
+    z-index: 1;
+  }
+
+  .inner {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    max-width: 100%;
+    z-index: 2;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .modal-heading {
+    border-radius: $borderRadius $borderRadius 0 0;
+    padding: 10px 15px;
+    font-size: 20px;
+    min-height: 45px;
+    color: #fff;
+  }
+
+  .modal-close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 1110;
+    height: 30px;
+    width: 30px;
+    right: 0;
+    top: 0;
+    opacity: 0.8;
+    border-right: 0;
+    border-top: 0;
+    border-radius: 0 5px 0 10px;
+    color: #000;
+    background: rgba(#fff, .2);
+    box-shadow: -3px 3px 10px rgba(#222, .8);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .modal-content,
+  .modal-footer-buttons {
+    background: #fff;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .modal-footer-buttons {
+    text-align: right;
+    border-radius: 0 0 $borderRadius $borderRadius;
+    padding: 8px 15px;
+
+    button {
+      .MuiButton-label {
+        text-transform: uppercase;
+      }
+
+      &:first-of-type {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .modal-spinner {
+    border-radius: $borderRadius;
+  }
+
+  [data-test=sentinelStart],
+  [data-test=sentinelEnd] {
+    display: none;
+  }
+
+  &:before {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    pointer-events: none;
+    visibility: hidden;
+    content: '';
+  }
+
+  &.with-heading {
+    .modal-close {
+      color: #fff;
+    }
+  }
+
+  &.no-heading {
+    .modal-content {
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+      overflow: hidden;
+    }
+  }
+
+  &.no-footer {
+    .modal-content {
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+      overflow: hidden;
+    }
+  }
+
+  &.closable {
+    .modal-heading {
+      padding-right: 45px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .modal-close {
+      height: 30px;
+      width: 30px;
+    }
+
+    &.closable {
+      .modal-heading {
+        padding-right: 40px;
+      }
+    }
+  }
+}

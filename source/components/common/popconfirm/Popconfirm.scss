@@ -1,0 +1,19 @@
+@import '/source/scss-variables/colors';
+
+.sec-popconfirm {
+  button:last-of-type {
+    background: $primary;
+    border-color: $primary;
+  }
+
+  button:first-of-type:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+
+  &.no-buttons {
+    .ant-popover-message {
+      padding: 0;
+    }
+  }
+}

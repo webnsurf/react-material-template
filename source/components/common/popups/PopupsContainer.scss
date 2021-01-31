@@ -1,0 +1,34 @@
+@import '../../../variables';
+
+.sec-notifications-container {
+  position: fixed;
+  top: 0;
+  right: 10px;
+  width: 300px;
+  z-index: 99999999999999999;
+}
+
+.sec-notification {
+  position: relative;
+  margin-top: 10px;
+
+  .notification-content {
+    box-shadow: -2px 2px 8px rgba(#000, 0.3);
+  }
+
+  &.slide-enter {
+    left: 100%;
+  }
+
+  &.slide-enter-active {
+    left: 0;
+  }
+
+  &.slide-exit {
+    left: 0;
+  }
+
+  &.slide-exit-active {
+    left: 100%;
+  }
+}

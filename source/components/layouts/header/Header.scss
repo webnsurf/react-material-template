@@ -1,0 +1,115 @@
+@import '../../../variables';
+
+header.sec-header {
+  height: 45px;
+  padding: 5px 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 1059;
+
+  a {
+    display: block;
+    line-height: 1;
+    color: inherit;
+  }
+
+  menu {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    a {
+      margin-right: 30px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+      }
+
+      &.logo {
+        height: 90%;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      &.active {
+        transition: transform .05s;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .main-controls {
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    display: flex;
+
+    .docs {
+      align-items: center;
+      margin-right: 20px;
+      display: flex;
+    }
+  }
+
+  .header-dropdown {
+    width: 220px;
+
+    .dropdown-inner {
+      top: calc(100% + 9px);
+      right: -10px;
+    }
+
+    .dropdown-items {
+      border-bottom-left-radius: 5px;
+      border-right: 0;
+    }
+  }
+
+  .organisations-list {
+    border-bottom: 1px solid #ccc;
+    max-height: 240px;
+    padding: 10px 0;
+    overflow: auto;
+  }
+
+  .organisations-list-item .dropdown-item-inner {
+    position: relative;
+    font-size: 18px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: calc(100% + 3px);
+      left: 10px;
+      width: 80px;
+      background: #bbb;
+      height: 2px;
+      border-radius: 100%;
+    }
+  }
+
+  .header-actions {
+    padding: 10px 0;
+
+    .dropdown-item {
+      padding-bottom: 7px;
+      padding-top: 7px;
+    }
+
+    .dropdown-item-overflow {
+      align-items: center;
+      display: flex;
+    }
+
+    .action-icon {
+      flex-shrink: 0;
+    }
+  }
+}

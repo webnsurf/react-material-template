@@ -1,0 +1,6 @@
+.sec-link {
+  &.disabled {
+    cursor: default;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,15 @@
+@import '../../../variables';
+
+.sec-section {
+  position: relative;
+
+  .section-heading {
+    background-color: lighten($mainColor, 10);
+    border-radius: 5px 5px 0 0;
+    justify-content: center;
+    min-height: 45px;
+    font-size: 18px;
+    padding: 0 10px;
+    display: flex;
+  }
+}
