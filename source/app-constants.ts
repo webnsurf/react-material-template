@@ -23,10 +23,8 @@ export const isProduction = environment === 'production';
 
 export const API_PREFIX = '/api';
 export const STORAGE_PREFIX = 'sce-';
-export const APP_SETTINGS_KEY = `${STORAGE_PREFIX}appSettings`;
-
+export const APP_SETTINGS_KEY = 'appSettings';
 export const AUTHENTICATED_COOKIE_KEY = 'webnsurf-nestjs-authenticated';
-
-export const LAST_URL_KEY = `${STORAGE_PREFIX}last-url`;
+export const LAST_URL_KEY = 'last-url';
 
 export const unavailFuncTitle = 'Currentrly unavailable';
