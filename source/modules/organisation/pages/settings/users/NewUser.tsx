@@ -1,6 +1,6 @@
-import React, { FC, memo, useCallback } from 'react';
+import React, { FC, memo, useCallback, useRef } from 'react';
 
-import { ModalProps } from 'components/common/modal';
+import { Modal, ModalProps } from 'components/common/modal';
 import { Form, Input } from 'components/forms';
 import { UserRoleSelector } from 'components/layouts';
 import { AddUserRequest } from 'api/organisation/types';
@@ -8,6 +8,7 @@ import { organisationAPI } from 'api/organisation';
 import { notifications } from 'utils/notifications';
 
 export const NewUser: FC<NewUserProps> = memo(({ orgId, reLoadUsers, ...rest }) => {
+  const modalRef = useRef<Modal>(null);
   const onSubmit = useCallback(
     async (values: AddUserRequest) => {
       await organisationAPI.addUser(orgId, values);
@@ -24,22 +25,28 @@ export const NewUser: FC<NewUserProps> = memo(({ orgId, reLoadUsers, ...rest }) 
       if (reLoadUsers) {
         reLoadUsers(orgId);
       }
+
+      if (modalRef.current) {
+        modalRef.current.close();
+      }
     },
     [orgId, reLoadUsers],
   );
 
   return (
-    <Form
-      onSubmit={onSubmit}
-      buttonLabel="Add User"
+    <Modal
+      heading="Enter user details below"
       className="sec-add-user"
-      modalHeading="Enter user details below"
-      modalProps={rest}
+      ref={modalRef}
+      width={500}
+      {...rest}
     >
-      <UserRoleSelector name="roleId" label="User role" className="field" required />
+      <Form onSubmit={onSubmit} buttonLabel="Add User">
+        <UserRoleSelector name="roleId" label="User role" className="field" required />
 
-      <Input label="User email" className="field" name="email" type="email" required />
-    </Form>
+        <Input label="User email" className="field" name="email" type="email" required />
+      </Form>
+    </Modal>
   );
 });
 

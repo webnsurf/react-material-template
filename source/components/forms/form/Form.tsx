@@ -24,7 +24,7 @@ const defaultSubscription: FormSubscription = {
   submitErrors: true,
 };
 
-const defaultSubscriptionWithValues: FormSubscription = {
+export const defaultSubscriptionWithValues: FormSubscription = {
   ...defaultSubscription,
   values: true,
 };

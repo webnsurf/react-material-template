@@ -11,3 +11,4 @@ export { PopupsContainer, Notification, Prompt } from './popups';
 export { Unavailable } from './unavailable';
 export { Popconfirm } from './popconfirm';
 export { Link } from './link';
+export { Table } from './table';

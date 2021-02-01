@@ -1,0 +1,146 @@
+@import '/source/scss-variables/colors';
+
+$lineHeight: 25px;
+
+.sec-table {
+  position: relative;
+  width: 100%;
+
+  .table-head-cell {
+    color: $secondaryText;
+    border-bottom: 1px solid $dividers;
+    font-size: 14px;
+  }
+
+  .table-add-button {
+    margin-top: 25px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .table-input {
+    .MuiInputBase-root {
+      padding-top: 2px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .table-select {
+    .MuiInputBase-root {
+      padding-top: 2px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .loading {
+    svg {
+      margin-top: 50px;
+    }
+  }
+
+  &.medium {
+    th,
+    td {
+      padding: 10px 15px;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+    }
+  }
+
+  /* stylelint-disable no-descending-specificity */
+  &.small {
+    th,
+    td {
+      padding: 5px 10px;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+    }
+  }
+
+  &.primary {
+    $radius: 2px;
+    $padding: 25px;
+
+    table {
+      border-collapse: separate;
+      border: 1px solid $primary;
+      border-radius: $radius;
+    }
+
+    th,
+    td {
+      &:first-of-type {
+        padding-left: $padding;
+      }
+
+      &:last-of-type {
+        padding-right: $padding;
+      }
+    }
+
+    thead tr th {
+      border-top: 3px solid $primary;
+      border-bottom: 1px solid $primary;
+      background: transparentize($primary, 0.9);
+      color: $primaryText;
+    }
+  }
+}
+
+tr.sec-table-row {
+  .table-cell {
+    border-bottom: 1px solid $dividers;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: $lineHeight;
+
+    &.editable {
+      padding-right: 34px;
+      position: relative;
+
+      .actions {
+        position: absolute;
+        top: 3px;
+        right: 0;
+
+        button {
+          padding: 5px;
+        }
+      }
+    }
+
+    &.ellipsis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &.in-edit {
+    .table-cell {
+      &.editable {
+        padding-right: 68px;
+      }
+    }
+  }
+
+  &:last-of-type {
+    .table-cell {
+      border-bottom: 0;
+    }
+  }
+}

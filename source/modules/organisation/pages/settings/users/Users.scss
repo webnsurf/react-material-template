@@ -3,7 +3,7 @@
 .sec-organisation-users {
   $maxPadding: 8px;
 
-  .table-cell-image {
+  .user-image-cell {
     $imageSize: 40px;
 
     padding-bottom: $maxPadding;
@@ -11,21 +11,16 @@
     width: $imageSize;
   }
 
-  .table-cell-role {
-    padding-bottom: $maxPadding;
-    padding-top: $maxPadding;
-    position: relative;
-    width: 150px;
+  .user-role-selector-cell {
+    width: 200px;
+  }
 
-    &.with-delete {
-      width: 200px;
-      padding-right: 40px;
+  .user-role-selector {
+    display: flex;
+    align-items: center;
 
-      .delete {
-        position: absolute;
-        right: 0;
-        top: 12px;
-      }
+    .selecotr-wrapper {
+      flex: 1;
     }
   }
 

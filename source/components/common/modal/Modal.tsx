@@ -140,7 +140,7 @@ export class Modal extends Component<ModalProps, ModalState> {
                   title="Close"
                   type="button"
                 >
-                  <Icon type="cancel" />
+                  <Icon type="close" />
                 </button>
               )}
 

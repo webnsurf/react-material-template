@@ -21,6 +21,8 @@ import Delete from '@material-ui/icons/Delete';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import NotesIcon from '@material-ui/icons/Notes';
 
 import { PalleteColor, resolvePalleteColor, resolvePalleteContrastColor } from 'theme';
 
@@ -28,7 +30,7 @@ const icons = {
   chevronDown: KeyboardArrowDown,
   chevronRight: KeyboardArrowRight,
   add: Add,
-  cancel: Close,
+  close: Close,
   cancelCircle: Cancel,
   check: Check,
   checkCircle: CheckCircle,
@@ -44,6 +46,8 @@ const icons = {
   eye: VisibilityOutlinedIcon,
   eyeSlash: VisibilityOffOutlinedIcon,
   home: HomeOutlinedIcon,
+  edit: EditOutlinedIcon,
+  notes: NotesIcon,
 };
 
 export const Icon: FC<IconProps> = ({
