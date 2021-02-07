@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { organisationAPI } from 'api/organisation';
 import { notifications } from 'utils/notifications';
 
+import { useAuthenticate } from '../user';
 import {
   Organisation,
   AfterSetOrganisationAction,
@@ -77,6 +78,25 @@ export const useCreateOrganisation = (): typeof organisationAPI.create => {
       history.push(`/${organisation.id}`);
 
       return organisation;
+    },
+    [dispatch, history],
+  );
+};
+
+export const useDeleteOrganisation = (): typeof organisationAPI.delete => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const authenticate = useAuthenticate();
+
+  return useCallback(
+    async orgId => {
+      await organisationAPI.delete(orgId);
+      dispatch(baseActions.afterSetOrganisation());
+      await authenticate();
+
+      notifications.success({ message: 'Organisation removed' });
+
+      history.push(`/`);
     },
     [dispatch, history],
   );

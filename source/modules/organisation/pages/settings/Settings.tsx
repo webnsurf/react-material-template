@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Redirect, Switch, Route, useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 
 import { Sidebar } from 'components/layouts';
-import { Icon } from 'components/common';
+import { Icon, Button, Popconfirm } from 'components/common';
+import { useDeleteOrganisation } from 'store/organisation/actions';
+import { useCanDeleteOrganisation } from 'store/access-control';
 
 import { OrganisationRouteParams, SETTINGS_TABS, SETTINGS_TABS_ARR } from '../../constants';
 
@@ -12,6 +13,10 @@ const { users } = SETTINGS_TABS;
 
 export const SettingsPage: FC = () => {
   const { orgId } = useParams<OrganisationRouteParams>();
+  const deleteOrganisation = useDeleteOrganisation();
+  const handleDelete = useCallback(() => deleteOrganisation(orgId), [deleteOrganisation, orgId]);
+  const canDelete = useCanDeleteOrganisation();
+
   return (
     <div className="sec-settings-page">
       <Sidebar className="settings-sidebar" partial>
@@ -30,6 +35,24 @@ export const SettingsPage: FC = () => {
               </NavLink>
             );
           })}
+
+          {canDelete && (
+            <Popconfirm
+              title="Are you sure you want to remove this organisation?"
+              onConfirm={handleDelete}
+              placement="bottomLeft"
+              okText="Yes"
+            >
+              <div className="link">
+                <Button variant="text" className="delete">
+                  <div className="icon">
+                    <Icon type="delete" />
+                  </div>
+                  Remove organisation
+                </Button>
+              </div>
+            </Popconfirm>
+          )}
         </div>
       </Sidebar>
 

@@ -8,6 +8,7 @@ import {
 
 export interface AccessControl {
   organisation: {
+    delete: number[];
     editUsers: number[];
   };
 }

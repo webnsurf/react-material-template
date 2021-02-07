@@ -10,6 +10,10 @@ export const organisationAPI = {
     const response = await API.post<Organisation>(getUrl(), data);
     return response.data;
   },
+  delete: async (orgId: string) => {
+    const response = await API.delete<void>(getUrl(orgId));
+    return response.data;
+  },
   getUsers: async (orgId: string) => {
     const response = await API.get<OrganisationUser[]>(getUrl(`${orgId}/users`));
     return response.data;

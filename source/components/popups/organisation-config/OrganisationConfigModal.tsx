@@ -53,7 +53,7 @@ export const OrganisationConfigModal: FC = () => {
 
   return (
     <Modal
-      width={550}
+      width={450}
       initiallyOpen
       className="sec-new-organisation"
       heading="Enter organisation details below:"
@@ -62,7 +62,6 @@ export const OrganisationConfigModal: FC = () => {
     >
       <Form initialValues={organisation} onSubmit={handleSubmit} buttonLabel="Create">
         <Input className="input" name="name" label="Name" required />
-        <Input name="url" label="Organisation URL" className="input" />
       </Form>
     </Modal>
   );

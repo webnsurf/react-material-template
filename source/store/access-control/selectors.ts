@@ -16,5 +16,10 @@ export const useCanEditUsers = () =>
     data.organisation.editUsers.includes(roleId),
   );
 
+export const useCanDeleteOrganisation = () =>
+  useSelector<AppState, boolean>(({ accessControl: { data }, user: { roleId } }) =>
+    data.organisation.delete.includes(roleId),
+  );
+
 export const useAccessControlState = () =>
   useSelector<AppState, AccessControlState>(({ accessControl }) => accessControl);
