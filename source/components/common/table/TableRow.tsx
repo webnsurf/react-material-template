@@ -102,6 +102,7 @@ const TableRowComponent = <DataType extends TableDataType>({
           maxWidth,
           ellipsis = !!width,
           inputProps,
+          indexColumn,
         } = column;
         const cellEditable = form && index === columns.length - 1;
         const cellClassName = classnames(
@@ -110,7 +111,7 @@ const TableRowComponent = <DataType extends TableDataType>({
           cellEditable && 'editable',
           column.className,
         );
-        const resolvedValue = dataIndex && rowData[dataIndex];
+        const resolvedValue = indexColumn ? rowIndex : dataIndex && rowData[dataIndex];
         const renderField = () => {
           if (!isEdit) {
             return resolvedValue;
@@ -131,8 +132,8 @@ const TableRowComponent = <DataType extends TableDataType>({
             tooltip(resolvedValue, renderProps);
           }
 
-          if (ellipsis) {
-            return resolvedValue;
+          if (ellipsis && resolvedValue) {
+            return String(resolvedValue);
           }
         };
 

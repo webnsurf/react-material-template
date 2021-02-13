@@ -27,6 +27,7 @@ export interface TableColumn<DataType = any> extends TableCellProps {
   tooltip?: (value: any, props: RenderProps<DataType>) => string;
   ellipsis?: boolean;
   inputProps?: Omit<InputProps, 'name'>;
+  indexColumn?: boolean;
 }
 
 export type TableDataType = Record<string, any>;
