@@ -3,17 +3,17 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { authAPI } from 'api/auth';
-import { AuthLoginRequest, AuthRegisterRequest } from 'api/auth/types';
 import { resolveError } from 'api/utils';
+import { AuthLoginRequest, AuthRegisterRequest } from 'api/auth/types';
 import { checkIsLoggedIn, getLastUrl, setLastUrl, removeLastUrl } from 'utils/storage/auth';
 import { notifications } from 'utils/notifications';
-
 import { checkIsAuthPage } from 'utils/router';
-
 import { AUTH_PAGES } from 'modules/authentication/constants';
+import { useLoadAccessControl } from 'store/access-control';
+import { useLoadDataTree } from 'store/data-tree';
 
 import { useSetOrganisationList } from '../organisation/actions';
-import { User } from './types';
+import { User, UserOrganisation } from './types';
 
 export const BEFORE_AUTHENTICATE = 'BEFORE_AUTHENTICATE';
 export const AFTER_AUTHENTICATE = 'AFTER_AUTHENTICATE';
@@ -36,37 +36,48 @@ export const baseActions = {
   }),
 };
 
-export const useRegister = () => {
+const useSetUser = () => {
   const dispatch = useDispatch();
   const setOrganisationList = useSetOrganisationList();
+  const loadAccessControl = useLoadAccessControl();
+  const loadDataTree = useLoadDataTree();
+
+  return useCallback(
+    (user: User, organisations: UserOrganisation[]) => {
+      loadDataTree();
+      loadAccessControl();
+      setOrganisationList(organisations);
+      dispatch(baseActions.afterAuthenticate(user));
+    },
+    [dispatch, loadAccessControl, loadDataTree, setOrganisationList],
+  );
+};
+
+export const useRegister = () => {
+  const setUser = useSetUser();
 
   return useCallback(
     async (data: AuthRegisterRequest) => {
       const { organisations, ...user } = await authAPI.register(data);
-
-      setOrganisationList(organisations);
-      dispatch(baseActions.afterAuthenticate(user));
+      setUser(user, organisations);
     },
-    [dispatch],
+    [setUser],
   );
 };
 
 export const useLogin = () => {
-  const dispatch = useDispatch();
+  const setUser = useSetUser();
   const history = useHistory();
-  const setOrganisationList = useSetOrganisationList();
 
   return useCallback(
     async (data: AuthLoginRequest) => {
       const { organisations, ...user } = await authAPI.login(data);
-
-      setOrganisationList(organisations || []);
-      dispatch(baseActions.afterAuthenticate(user));
+      setUser(user, organisations);
 
       history.push(getLastUrl() || '/');
       removeLastUrl();
     },
-    [dispatch, history],
+    [setUser, history],
   );
 };
 
@@ -98,10 +109,10 @@ export const useLogout = () => {
 };
 
 export const useAuthenticate = () => {
+  const setUser = useSetUser();
   const dispatch = useDispatch();
-  const logout = useLogout();
   const redirectToLogin = useRedirectToLogin();
-  const setOrganisationList = useSetOrganisationList();
+  const logout = useLogout();
 
   return useCallback(async () => {
     if (checkIsLoggedIn()) {
@@ -109,9 +120,8 @@ export const useAuthenticate = () => {
 
       try {
         const { organisations, ...user } = await authAPI.authenticate();
+        setUser(user, organisations);
 
-        setOrganisationList(organisations || []);
-        dispatch(baseActions.afterAuthenticate(user));
         return user;
       } catch (axiosError) {
         dispatch(baseActions.afterAuthenticateError());

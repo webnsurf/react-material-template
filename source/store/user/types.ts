@@ -15,7 +15,7 @@ export interface User {
   image: string;
 }
 
-interface UserOrganisation extends Organisation {
+export interface UserOrganisation extends Organisation {
   role: {
     id: number;
     name: string;

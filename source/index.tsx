@@ -12,8 +12,8 @@ import { theme } from 'theme';
 import { Spinner, PopupsContainer } from 'components/common';
 import { AuthenticationModule } from 'modules/authentication';
 import { OrganisationModule } from 'modules/organisation';
-import { useIsDataTreeLoading, useLoadDataTree } from 'store/data-tree';
-import { useIsAccessControlLoading, useLoadAccessControl } from 'store/access-control';
+import { useIsDataTreeLoading } from 'store/data-tree';
+import { useIsAccessControlLoading } from 'store/access-control';
 
 const mod: any = module;
 
@@ -23,21 +23,14 @@ if (isDevelopment && mod.hot) {
 
 export const App: FC = () => {
   const authenticate = useAuthenticate();
-  const loadDataTree = useLoadDataTree();
-  const loadAccessControl = useLoadAccessControl();
   const isAuthenticating = useIsAuthenticating();
   const isLoggedIn = useIsLoggedIn();
   const isDataTreeLoading = useIsDataTreeLoading();
   const isAccessControlLoading = useIsAccessControlLoading();
 
   useEffect(() => {
-    authenticate().then(user => {
-      if (user) {
-        loadDataTree();
-        loadAccessControl();
-      }
-    });
-  }, [authenticate, loadDataTree, loadAccessControl]);
+    authenticate();
+  }, [authenticate]);
 
   const renderContent = () => {
     if (isAuthenticating || isDataTreeLoading || isAccessControlLoading) {
