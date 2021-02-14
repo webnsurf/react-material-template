@@ -27,12 +27,7 @@ export const LoginPage: FC = () => (
       </div>
     }
   >
-    <Form
-      onSubmit={useLogin()}
-      buttonLabel={login.buttonLabel}
-      className="sec-login-page"
-      buttonPosition="center"
-    >
+    <Form onSubmit={useLogin()} buttonLabel={login.buttonLabel} className="sec-login-page">
       <div className="input-wrapper">
         <Input name="email" type="email" label="Email" required />
       </div>

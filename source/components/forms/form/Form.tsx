@@ -42,7 +42,7 @@ const FormComponent = <DataType extends FormValueType>({
   className: passedClassName,
   contentClassName,
   buttonLabel,
-  buttonPosition,
+  buttonPosition = 'center',
   buttonType,
   buttonWidth,
   displaySpinner,
@@ -165,7 +165,7 @@ export interface FormProps<DataType = FormValueType> extends FFormProps<DataType
   className?: string;
   contentClassName?: string;
   buttonLabel?: string;
-  buttonPosition?: 'right' | 'center';
+  buttonPosition?: 'left' | 'right' | 'center';
   buttonType?: ButtonProps['type'];
   buttonWidth?: ButtonProps['width'];
   displaySpinner?: boolean;
