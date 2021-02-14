@@ -53,6 +53,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-no-duplicate-props': ['error', { ignoreCase: false }],
     'react/jsx-wrap-multilines': ['error', { declaration: false, assignment: false }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
 
     'object-curly-newline': 'off',
     'implicit-arrow-linebreak': 'off',
