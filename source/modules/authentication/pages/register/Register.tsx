@@ -36,7 +36,12 @@ export const RegisterPage: FC = () => (
       </div>
     }
   >
-    <Form onSubmit={useRegister()} buttonLabel={register.buttonLabel} className="sec-register-page">
+    <Form
+      onSubmit={useRegister()}
+      buttonLabel={register.buttonLabel}
+      className="sec-register-page"
+      buttonPosition="center"
+    >
       <div className="input-wrapper">
         <Input name="name" label="Name" required />
       </div>
