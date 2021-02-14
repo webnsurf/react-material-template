@@ -11,7 +11,7 @@ import { FormApi } from 'final-form';
 import { notifications } from 'utils/notifications';
 import { resolveError } from 'api/utils';
 
-import { defaultSubscriptionWithValues } from '../../forms/form';
+import { defaultFormSubscriptionWithValues } from '../../forms/form';
 import { IconButton, IconButtonProps } from '../button';
 import { Spinner } from '../spinner';
 import { NoData } from '../no-data';
@@ -159,7 +159,7 @@ const TableComponent = <DataType extends TableDataType>({
       <Form
         initialValues={data}
         onSubmit={handleSubmit}
-        subscription={defaultSubscriptionWithValues}
+        subscription={defaultFormSubscriptionWithValues}
         render={renderTable}
       />
     );

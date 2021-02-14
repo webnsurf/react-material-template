@@ -1,157 +1,178 @@
-import React, { ReactNode, useCallback } from 'react';
-import { Form as FinalForm, FormProps as FinalFormProps } from 'react-final-form';
-import { FormSubscription, AnyObject } from 'final-form';
-import createDecorator from 'final-form-focus';
+import React, { Fragment, memo, useCallback } from 'react';
+import {
+  Form as FinalForm,
+  FormProps as FinalFormProps,
+  UseFormStateParams,
+  UseFieldConfig,
+  useFormState,
+  useField,
+} from 'react-final-form';
+import { FormApi } from 'final-form';
 import classnames from 'classnames';
 
-import { notifications } from 'utils/notifications';
+import { Message, Spinner } from 'components/common';
+import { unavailFuncTitle } from 'app-constants';
 import { resolveError } from 'api/utils';
 
-import { Modal, ModalProps } from '../../common/modal';
 import { Button, ButtonProps } from '../../common/button';
-import { Spinner } from '../../common';
 
-const decorators = [createDecorator()];
-
-const defaultSubmit = (): any => null;
-const defaultSubscription: FormSubscription = {
+export const defaultFormSubscription: Subscription = {
+  submitting: true,
   valid: true,
   invalid: true,
+  touched: true,
+  hasSubmitErrors: true,
   dirtySinceLastSubmit: true,
   submitFailed: true,
-  submitting: true,
-  submitError: true,
-  submitErrors: true,
+  error: true,
 };
 
-export const defaultSubscriptionWithValues: FormSubscription = {
-  ...defaultSubscription,
+export const defaultFormSubscriptionWithValues: Subscription = {
+  ...defaultFormSubscription,
   values: true,
 };
 
-export const Form = <T extends AnyObject>({
-  id,
-  onSubmit = defaultSubmit,
-  onSuccess,
+const defaultSubmit = () => {};
+
+const FormComponent = <DataType extends FormValueType>({
+  children,
+  render,
+  subscription: providedSubscription,
+  loading,
   className: passedClassName,
   contentClassName,
-  children,
-  subscription = children instanceof Function ? defaultSubscriptionWithValues : defaultSubscription,
   buttonLabel,
-  buttonSize = 'large',
+  buttonPosition,
+  buttonType,
   buttonWidth,
   displaySpinner,
+  renderOutside,
+  onSubmit = defaultSubmit,
   initialValues,
-  title,
-  disabled,
-  throwOnError,
-  modalProps,
-  modalHeading,
+  unavailable,
+  displayError,
+  id,
   ...rest
-}: FormProps<T>) => {
-  const handleSubmit: FinalFormProps<any>['onSubmit'] = useCallback(
-    async (values, form) => {
+}: FormProps<DataType>) => {
+  const handleSubmit = useCallback(
+    async (data: DataType, form: FormApi<DataType>) => {
       try {
-        const response = await onSubmit(values, form);
-
-        if (onSuccess) {
-          onSuccess(response);
-        }
+        const response = await onSubmit(data, form);
+        return response;
       } catch (rawError) {
         const error = resolveError(rawError);
-
         if (error.fieldErrors) {
           return error.fieldErrors;
         }
 
-        if (throwOnError) {
-          throw error;
-        }
-
-        notifications.error(error);
+        throw rawError;
       }
     },
-    [onSubmit, onSuccess, throwOnError],
+    [onSubmit],
+  );
+  const subscription =
+    render || typeof children === 'function'
+      ? defaultFormSubscriptionWithValues
+      : defaultFormSubscription;
+  const className = classnames(
+    'sec-form',
+    passedClassName,
+    buttonPosition && `button-${buttonPosition}`,
   );
 
-  const form = (
-    <FinalForm<T>
-      onSubmit={handleSubmit}
-      subscription={subscription}
-      decorators={decorators as any}
-      initialValues={initialValues}
-      {...rest}
-    >
-      {renderProps => {
-        const { submitting, invalid, submitFailed, dirtySinceLastSubmit } = renderProps;
+  return (
+    <div className={className}>
+      <FinalForm
+        subscription={providedSubscription || subscription}
+        initialValues={initialValues || undefined}
+        onSubmit={handleSubmit}
+        {...rest}
+      >
+        {renderProps => {
+          const {
+            invalid,
+            hasSubmitErrors,
+            dirtySinceLastSubmit,
+            submitting,
+            submitFailed,
+            error,
+          } = renderProps;
+          const renderer = render || (typeof children === 'function' && children);
 
-        const innerContent = children instanceof Function ? children(renderProps) : children;
+          return (
+            <Fragment>
+              <form onSubmit={renderProps.handleSubmit} id={id} noValidate>
+                {displayError && (
+                  <Message open={submitFailed && !!error} marginBottom={15} message={error} />
+                )}
 
-        const className = classnames(
-          'sec-form',
-          submitting && 'submitting',
-          displaySpinner && 'with-spinner',
-          passedClassName,
-        );
+                <div className={classnames('form-content', contentClassName)}>
+                  {renderer ? renderer(renderProps) : children}
+                </div>
 
-        return (
-          <form
-            id={id}
-            onSubmit={renderProps.handleSubmit}
-            className={className}
-            title={title}
-            noValidate
-          >
-            <div className={classnames('inner-content', contentClassName)}>
-              {innerContent}
-              {buttonLabel && (
-                <div className="submit-button">
+                {buttonLabel && (
                   <Button
-                    type="submit"
-                    disabled={invalid && (!submitFailed || !dirtySinceLastSubmit)}
+                    className="submit-button"
+                    disabled={invalid && !(hasSubmitErrors && dirtySinceLastSubmit)}
                     loading={submitting}
-                    size={buttonSize}
+                    type={buttonType}
                     width={buttonWidth}
-                    htmlDisabled={disabled}
+                    onClick={() => {
+                      if (buttonType === 'button') {
+                        renderProps.form.submit();
+                      }
+                    }}
+                    {...(unavailable && { submitDisabled: true, title: unavailFuncTitle })}
                   >
                     {buttonLabel}
                   </Button>
-                </div>
-              )}
-            </div>
+                )}
 
-            {displaySpinner && <Spinner visible={submitting} />}
-          </form>
-        );
-      }}
-    </FinalForm>
+                {(loading || (displaySpinner && submitting)) && <Spinner />}
+              </form>
+
+              {renderOutside && renderOutside(renderProps)}
+            </Fragment>
+          );
+        }}
+      </FinalForm>
+    </div>
   );
-
-  if (modalProps || modalHeading) {
-    return (
-      <Modal heading={modalHeading} {...modalProps}>
-        {form}
-      </Modal>
-    );
-  }
-
-  return form;
 };
 
-export interface FormProps<T = any> extends Omit<FinalFormProps<T>, 'onSubmit'> {
-  id?: string;
+export const Form = memo(FormComponent) as typeof FormComponent;
+
+const useFormValuesParams: UseFormStateParams<any> = {
+  subscription: { values: true },
+};
+const useFieldValueParams: UseFieldConfig<any> = {
+  subscription: { value: true },
+};
+export const useFormValues = <FormValues extends FormValueType>(params = useFormValuesParams) =>
+  useFormState<FormValues>(params);
+export const useFieldValue = <FormValues extends FormValueType, ValueType = any>(
+  name: keyof FormValues,
+  params = useFieldValueParams,
+) => useField(name as string, params).input.value as ValueType;
+
+export { useForm } from 'react-final-form';
+
+type Subscription = FinalFormProps['subscription'];
+type FormValueType = Record<string, any>;
+type FFormProps<DataType> = Omit<FinalFormProps<DataType>, 'onSubmit' | 'initialValues'>;
+export interface FormProps<DataType = FormValueType> extends FFormProps<DataType> {
+  loading?: boolean;
   className?: string;
   contentClassName?: string;
-  buttonLabel?: ReactNode;
-  buttonSize?: ButtonProps['size'];
+  buttonLabel?: string;
+  buttonPosition?: 'right' | 'center';
+  buttonType?: ButtonProps['type'];
   buttonWidth?: ButtonProps['width'];
   displaySpinner?: boolean;
-  onSubmit?: FinalFormProps<T>['onSubmit'];
-  onSuccess?: (response: any) => any;
-  title?: string;
-  disabled?: boolean;
-  throwOnError?: boolean;
-  modalProps?: ModalProps;
-  modalHeading?: ModalProps['heading'];
-  initialValues?: T;
+  renderOutside?: FinalFormProps<DataType>['render'];
+  onSubmit?: FinalFormProps<DataType>['onSubmit'];
+  initialValues?: FinalFormProps<DataType>['initialValues'] | null;
+  unavailable?: boolean;
+  displayError?: boolean;
+  id?: string;
 }
