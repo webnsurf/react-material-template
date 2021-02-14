@@ -9,6 +9,7 @@ import {
 
 const initialAccessControl: AccessControl = {
   organisation: {
+    delete: [],
     editUsers: [],
   },
 };
