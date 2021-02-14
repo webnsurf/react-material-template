@@ -3,7 +3,7 @@ import { AxiosError, AxiosRequestConfig } from 'axios';
 export interface ErrorModel {
   message: string;
   statusCode: number;
-  fieldErrors?: { [key: string]: string };
+  fields?: { [key: string]: string };
 }
 
 export const resolveError = (rawError?: AxiosError<ErrorModel>): ErrorModel => {
@@ -16,7 +16,7 @@ export const resolveError = (rawError?: AxiosError<ErrorModel>): ErrorModel => {
     return {
       message: data?.message || message || 'Unknown error (FE)',
       statusCode: status || data?.statusCode || 500,
-      fieldErrors: data?.fieldErrors,
+      fields: data?.fields,
     };
   }
 

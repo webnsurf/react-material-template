@@ -61,8 +61,8 @@ const FormComponent = <DataType extends FormValueType>({
         return response;
       } catch (rawError) {
         const error = resolveError(rawError);
-        if (error.fieldErrors) {
-          return error.fieldErrors;
+        if (error.fields) {
+          return error.fields;
         }
 
         throw rawError;
