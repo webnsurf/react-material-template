@@ -10,7 +10,8 @@ import React, {
   forwardRef,
   useState,
 } from 'react';
-import { Form, Field, FieldRenderProps } from 'react-final-form';
+import { Form, Field, FieldRenderProps, useForm } from 'react-final-form';
+import { FormApi } from 'final-form';
 import classnames from 'classnames';
 import MatInput, { InputProps as MatInputProps } from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -18,9 +19,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
+import { useFieldValidation, FieldValidator } from 'utils/validation';
 import { submitForm } from 'utils/form';
 import { emptyFn } from 'utils/general';
-import { getDefaultValidators, FieldValidator } from 'utils/validation';
 
 import { IconButton, Unavailable } from '../../common';
 import { Icon, IconProps, IconType } from '../../common/icon';
@@ -61,6 +62,8 @@ export const InputRenderer = forwardRef<any, InputRendererProps>(
     const { name } = input;
     const randomId = useMemo(() => `input-${name}-${Math.floor(Math.random() * 10000)}`, [name]);
     const errorMessage = touched && (error || (!dirtySinceLastSubmit && submitError));
+    let form: FormApi<any> | null = null;
+    try { form = useForm(); } catch {} // eslint-disable-line
 
     const handleChange = useCallback(
       (event: InputChangeEvent) => {
@@ -103,11 +106,15 @@ export const InputRenderer = forwardRef<any, InputRendererProps>(
         }
 
         if (ctrlKey && /[\n\r]/.test(key)) {
-          const textArea = event.target as HTMLInputElement;
-          submitForm(textArea.closest('form'));
+          if (form) {
+            form.submit();
+          } else {
+            const textArea = event.target as HTMLInputElement;
+            submitForm(textArea.closest('form'));
+          }
         }
       },
-      [onKeyPress],
+      [onKeyPress, form],
     );
     const isPasswordField = input.type === 'password';
 
@@ -236,55 +243,30 @@ const InputComponent = forwardRef<any, InputProps>(
     },
     ref,
   ) => {
-    const validators = useMemo(
-      () =>
-        getDefaultValidators<string>({
-          inputType: type,
-          min,
-          max,
-          label,
-          required,
-          minLength,
-          maxLength,
-          errorMessage,
-          validatePassword,
-        }).concat(customValidators || []),
-      [
+    const validate = useFieldValidation(
+      {
+        inputType: type,
+        validatePassword,
+        errorMessage,
+        maxLength,
+        minLength,
+        required,
+        label,
         min,
         max,
-        type,
-        label,
-        required,
-        minLength,
-        maxLength,
-        customValidators,
-        errorMessage,
-        validatePassword,
-      ],
+      },
+      customValidators,
     );
 
-    const validator = useCallback(
-      (value?: string, formValues?: any) =>
-        validators.reduce<string | void>(
-          (error, validate) => (error !== undefined ? error : validate(value, formValues)),
-          undefined,
-        ),
-      [validators],
-    );
-    const renderer = useCallback(
-      (props: FieldRenderProps<string>) => <InputRenderer {...props} ref={ref} />,
-      [ref],
-    );
     const renderField = () => (
       <Field
         name={name || 'field'}
         type={type}
         initialValue={defaultValue}
-        render={renderer}
-        validate={validator}
-        label={label}
-        required={required}
+        render={props => <InputRenderer required={required} label={label} {...props} />}
+        validate={validate}
         parse={parser}
+        ref={ref}
         {...rest}
       />
     );

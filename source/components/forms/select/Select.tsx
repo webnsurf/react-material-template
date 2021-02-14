@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useCallback, ReactNode, forwardRef } from 'react';
+import React, { memo, useCallback, ReactNode, forwardRef } from 'react';
 import { Field, FieldRenderProps, Form } from 'react-final-form';
 import classnames from 'classnames';
 import Autocomplete, { AutocompleteProps } from '@material-ui/lab/Autocomplete';
@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
-import { getDefaultValidators, FieldValidator } from 'utils/validation';
+import { useFieldValidation, FieldValidator } from 'utils/validation';
 import { emptyFn } from 'utils/general';
 
 import { Unavailable, Spinner } from '../../common';
@@ -98,8 +98,7 @@ export const SelectRenderer = forwardRef<any, SelectRendererProps>(
           loading={loadingData}
           loadingText={
             <div className="sec-select-autocomplete-loading">
-              <Spinner className="data-spinner" type="transparent" size={24} simple />
-              &nbsp; Loading data
+              <Spinner className="data-spinner" type="transparent" size={24} simple /> Loading data
             </div>
           }
           popupIcon={
@@ -142,36 +141,21 @@ export const SelectRenderer = forwardRef<any, SelectRendererProps>(
 
 const SelectComponent = forwardRef<any, SelectProps>(
   ({ name, defaultValue, validators: customValidators, label, required, ...rest }, ref) => {
-    const validators = useMemo(
-      () =>
-        getDefaultValidators<ValueType>({
-          label,
-          required,
-        }).concat(customValidators || []),
-      [label, required, customValidators],
-    );
-    const validator = useCallback(
-      (value?: ValueType, formValues = {}) =>
-        validators.reduce<string | void>(
-          (error, validate) => error || validate(value, formValues),
-          undefined,
-        ),
-      [validators],
-    );
-    const renderer = useCallback(
-      (props: FieldRenderProps<ValueType>) => <SelectRenderer {...props} ref={ref} />,
-      [ref],
+    const validate = useFieldValidation<ValueType>(
+      {
+        required,
+        label,
+      },
+      customValidators,
     );
 
     const renderField = () => (
       <Field<ValueType>
-        initialValue={defaultValue}
-        render={renderer}
-        validate={validator}
-        label={label}
-        required={required}
         name={name || 'field'}
-        {...rest}
+        initialValue={defaultValue}
+        render={props => <SelectRenderer required={required} label={label} {...props} {...rest} />}
+        validate={validate}
+        ref={ref}
       />
     );
 

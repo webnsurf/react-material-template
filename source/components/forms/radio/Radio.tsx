@@ -8,10 +8,10 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-import { createOptionList } from 'utils/form';
-import { FieldValidator, getDefaultValidators } from 'utils/validation';
-import { getRandomString } from 'utils/general';
 import { Unavailable } from 'components/common';
+import { FieldValidator, useFieldValidation } from 'utils/validation';
+import { createOptionList } from 'utils/form';
+import { emptyFn } from 'utils/general';
 
 const RadioRenderer = <DataType extends ValueType>({
   meta: { error, submitError, touched, dirtySinceLastSubmit },
@@ -86,41 +86,33 @@ const RadioComponent = <DataType extends ValueType>({
   heading,
   ...rest
 }: RadioProps<DataType>) => {
-  const validators = useMemo(
-    () =>
-      getDefaultValidators<DataType>({
-        inputType: 'radio',
-        label: label || heading,
-        required,
-        errorMessage,
-      }).concat(customValidators || []),
-    [label, heading, required, customValidators, errorMessage],
+  const validate = useFieldValidation(
+    {
+      inputType: 'radio',
+      label: label || heading,
+      required,
+      errorMessage,
+    },
+    customValidators,
   );
 
-  const validator = (value?: DataType, formValues = {}) =>
-    validators.reduce<string | void>(
-      (error, validate) => (error !== undefined ? error : validate(value, formValues)),
-      undefined,
-    );
-
-  const field = (
+  const renderField = () => (
     <Field
-      name={useMemo(() => name || getRandomString(), [name])}
-      render={RadioRenderer as any}
+      name={name || 'field'}
+      render={props => (
+        <RadioRenderer required={required} heading={heading} label={label} {...props} {...rest} />
+      )}
       initialValue={defaultValue}
-      validate={validator}
-      label={label}
-      heading={heading}
-      required={required}
+      validate={validate}
       {...rest}
     />
   );
 
   if (!name) {
-    return <Form onSubmit={() => {}}>{() => field}</Form>;
+    return <Form onSubmit={emptyFn} render={renderField} />;
   }
 
-  return field;
+  return renderField();
 };
 
 export const Radio = memo(RadioComponent) as typeof RadioComponent;
