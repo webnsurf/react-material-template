@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { FormApi } from 'final-form';
 import TableCell from '@material-ui/core/TableCell';
@@ -47,6 +47,7 @@ const TableRowComponent = <DataType extends TableDataType>({
   loading = false,
   isNewOption = false,
   index: rowIndex,
+  actionsUnavailable,
   resolveRowClassName,
   onSubmit,
   onRemove,
@@ -157,17 +158,33 @@ const TableRowComponent = <DataType extends TableDataType>({
             if (isEdit) {
               return (
                 <div className="actions">
-                  <IconButton type="check" color="primary" onClick={form?.submit} title="Save" />
+                  <IconButton
+                    title="Save"
+                    type="check"
+                    color="primary"
+                    onClick={form?.submit}
+                    unavailable={!!actionsUnavailable}
+                    unavailableTitle={actionsUnavailable}
+                  />
 
                   {isNewOption ? (
-                    <IconButton type="delete" title="Remove" color="error" onClick={handleRemove} />
+                    <IconButton
+                      type="delete"
+                      title="Remove"
+                      color="error"
+                      onClick={handleRemove}
+                      unavailable={!!actionsUnavailable}
+                      unavailableTitle={actionsUnavailable}
+                    />
                   ) : (
                     <IconButton
                       type="close"
                       title="Exit"
+                      color="error"
                       onClick={toggleEdit}
                       disabled={hasError}
-                      color="error"
+                      unavailable={!!actionsUnavailable}
+                      unavailableTitle={actionsUnavailable}
                     />
                   )}
                 </div>
@@ -176,7 +193,14 @@ const TableRowComponent = <DataType extends TableDataType>({
 
             return (
               <div className="actions">
-                <IconButton type="edit" color="primary" title="Edit data" onClick={toggleEdit} />
+                <IconButton
+                  type="edit"
+                  color="primary"
+                  title="Edit data"
+                  onClick={toggleEdit}
+                  unavailable={!!actionsUnavailable}
+                  unavailableTitle={actionsUnavailable}
+                />
 
                 {onRemove && (
                   <Popconfirm
@@ -190,7 +214,13 @@ const TableRowComponent = <DataType extends TableDataType>({
                     onConfirm={handleRemove}
                     okText="Yes"
                   >
-                    <IconButton type="delete" title="Remove" color="error" />
+                    <IconButton
+                      type="delete"
+                      title="Remove"
+                      color="error"
+                      unavailable={!!actionsUnavailable}
+                      unavailableTitle={actionsUnavailable}
+                    />
                   </Popconfirm>
                 )}
               </div>
@@ -256,6 +286,7 @@ export interface TableRowProps<DataType extends TableDataType = any> {
   className?: string;
   isNewOption?: boolean;
   form?: FormApi<any>;
+  actionsUnavailable?: ReactNode | false;
   resolveRowClassName?: (data: DataType) => string | null | undefined | false;
   onSubmit?: (data: DataType, form: FormApi<DataType>) => any;
   onRemove?: (key: string) => any;

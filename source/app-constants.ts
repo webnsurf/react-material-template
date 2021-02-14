@@ -28,3 +28,4 @@ export const AUTHENTICATED_COOKIE_KEY = 'webnsurf-nestjs-authenticated';
 export const LAST_URL_KEY = 'last-url';
 
 export const unavailFuncTitle = 'Currentrly unavailable';
+export const unavailForUserTitle = 'Unavailable for current user';

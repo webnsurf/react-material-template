@@ -28,6 +28,7 @@ export const IconButton = forwardRef<HTMLAnchorElement, IconButtonProps>(
       type,
       size,
       unavailable,
+      unavailableTitle,
       link,
       ...rest
     },
@@ -105,7 +106,11 @@ export const IconButton = forwardRef<HTMLAnchorElement, IconButtonProps>(
       return renderButton(className);
     };
 
-    return <Unavailable active={!!unavailable}>{renderContent()}</Unavailable>;
+    return (
+      <Unavailable active={!!unavailable} title={unavailableTitle}>
+        {renderContent()}
+      </Unavailable>
+    );
   },
 );
 
@@ -123,6 +128,7 @@ export interface IconButtonProps extends Omit<MatButtonProps, 'color' | 'size' |
   backgroundHex?: string;
   size?: IconProps['size'];
   unavailable?: boolean;
+  unavailableTitle?: ReactNode;
   forceClick?: MatButtonProps['onClick'];
   link?: string;
 }

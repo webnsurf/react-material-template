@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, memo } from 'react';
+import React, { useState, useCallback, useEffect, memo, ReactNode } from 'react';
 import classnames from 'classnames';
 import MatTable, { TableProps as MatTableProps } from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,6 +23,7 @@ const TableComponent = <DataType extends TableDataType>({
   columns,
   loading,
   data: initialData,
+  actionsUnavailable,
   size = 'medium',
   rowKey = 'id',
   addButtonLabel = 'Add another',
@@ -108,6 +109,7 @@ const TableComponent = <DataType extends TableDataType>({
             isNewOption={!initialRowData}
             resolveRowClassName={resolveRowClassName}
             onRemove={onRemove || (getNewOption && removeRow)}
+            actionsUnavailable={actionsUnavailable}
             onEditStart={onEditStart}
             onSubmit={onRowSubmit}
             className={type}
@@ -145,7 +147,14 @@ const TableComponent = <DataType extends TableDataType>({
 
         {getNewOption && (
           <div className="table-add-button">
-            <IconButton type="add" label={addButtonLabel} onClick={addNewRow} disabled={invalid} />
+            <IconButton
+              type="add"
+              label={addButtonLabel}
+              onClick={addNewRow}
+              disabled={invalid}
+              unavailable={!!actionsUnavailable}
+              unavailableTitle={actionsUnavailable}
+            />
           </div>
         )}
 
@@ -188,4 +197,5 @@ export interface TableProps<DataType extends TableDataType = any>
   onAddNew?: () => any;
   type?: 'primary' | 'simple';
   throwOnError?: boolean;
+  actionsUnavailable?: ReactNode | false;
 }
