@@ -1,17 +1,22 @@
-import React, { FC, MouseEvent, useCallback } from 'react';
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import React, { FC, MouseEvent, ReactNode, useCallback } from 'react';
+import {
+  Link as RouterLink,
+  NavLink as RouterNavLink,
+  NavLinkProps as RouterLinkProps,
+} from 'react-router-dom';
 import classnames from 'classnames';
 import validator from 'validator';
 
 import { resolvePalleteColor, PalleteColor } from 'theme';
 
-import { Unavailable } from '../unavailable/Unavailable';
+import { Unavailable } from '../unavailable';
 
 export const Link: FC<LinkProps> = ({
   className: providedClassName,
+  title: providedTitle,
+  to,
   blank,
   children,
-  to,
   disabled,
   unavailable,
   color,
@@ -43,12 +48,15 @@ export const Link: FC<LinkProps> = ({
   const href = String(to);
   const isEmail = validator.isEmail(href.split(/\?/)[0]);
   const style = color ? { color: resolvePalleteColor(color) } : undefined;
+  const LinkComponent = rest.activeClassName ? RouterNavLink : RouterLink;
+  const title = !unavailable ? providedTitle : undefined;
   const content =
     blank || isEmail ? (
       <a
         className={className}
         href={`${isEmail ? 'mailto:' : ''}${href}`}
         onClick={handleClick}
+        title={title ? String(title) : undefined}
         target="_blank"
         rel="noreferrer"
         style={style}
@@ -56,17 +64,29 @@ export const Link: FC<LinkProps> = ({
         {children || href}
       </a>
     ) : (
-      <RouterLink className={className} onClick={handleClick} style={style} to={href} {...rest}>
+      <LinkComponent
+        className={className}
+        onClick={handleClick}
+        title={title ? String(title) : undefined}
+        style={style}
+        to={href}
+        {...rest}
+      >
         {children || href}
-      </RouterLink>
+      </LinkComponent>
     );
 
-  return <Unavailable active={!!unavailable}>{content}</Unavailable>;
+  return (
+    <Unavailable active={!!unavailable} title={providedTitle}>
+      {content}
+    </Unavailable>
+  );
 };
 export interface LinkProps extends Omit<RouterLinkProps, 'title'> {
   blank?: boolean;
   disabled?: boolean;
   unavailable?: boolean;
+  title?: ReactNode;
   color?: PalleteColor;
   forceOnClick?: RouterLinkProps['onClick'];
 }
