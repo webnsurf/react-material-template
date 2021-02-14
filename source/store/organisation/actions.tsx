@@ -98,6 +98,6 @@ export const useDeleteOrganisation = (): typeof organisationAPI.delete => {
 
       history.push(`/`);
     },
-    [dispatch, history],
+    [dispatch, authenticate, history],
   );
 };

@@ -44,7 +44,7 @@ export const OrganisationConfigModal: FC = () => {
         }
       }
     },
-    [onSubmit, handleClose, onError],
+    [onSubmit, handleClose, onError, createOrganisation, organisation],
   );
 
   if (!isOpen) {

@@ -77,7 +77,7 @@ export const RoleColumn: FC<RoleColumnProps> = ({ reLoadUsers, id: userId, email
         authenticate();
       }
     }
-  }, [orgId, userId, isSameUser, reLoadUsers, authenticate]);
+  }, [orgId, userId, isSameUser, reLoadUsers, resetOrganisations, authenticate]);
 
   return (
     <div className="user-role-selector">

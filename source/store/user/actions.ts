@@ -133,5 +133,5 @@ export const useAuthenticate = () => {
 
     dispatch(baseActions.afterLogout());
     redirectToLogin();
-  }, [dispatch, logout, redirectToLogin]);
+  }, [dispatch, setUser, logout, redirectToLogin]);
 };

@@ -35,7 +35,7 @@ const OrganisationModule: FC = () => {
     }
 
     setIsRouteVerified(true);
-  }, [orgId, organisations, setOrganisation]);
+  }, [history, orgId, organisations, setOrganisation]);
 
   if (!isRouteVerified) {
     return null;

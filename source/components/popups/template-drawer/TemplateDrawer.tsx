@@ -9,11 +9,14 @@ import { PopupName } from 'store/popups/types';
 export const TemplateDrawer: FC = () => {
   const { isOpen, data } = usePopup(PopupName.newOrganisation);
   const actions = usePopupActions();
-  const onSubmit = useCallback(async submitData => {
-    // eslint-disable-next-line no-console
-    console.log(submitData);
-    actions.close(PopupName.newOrganisation);
-  }, []);
+  const onSubmit = useCallback(
+    async submitData => {
+      // eslint-disable-next-line no-console
+      console.log(submitData);
+      actions.close(PopupName.newOrganisation);
+    },
+    [actions],
+  );
   const initialData = useMemo(() => ({ ...data }), [data]);
 
   const handleClose = useCallback(() => {
