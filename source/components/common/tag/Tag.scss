@@ -1,0 +1,37 @@
+.sec-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 13px;
+  min-height: 24px;
+
+  .remove-option-button {
+    margin-left: 2px;
+  }
+
+  &.removable {
+    justify-content: space-between;
+
+    &.medium {
+      padding: 5px;
+      padding-left: 15px;
+
+      .remove-option-button {
+        padding: 5px;
+      }
+    }
+
+    &.small {
+      padding: 3px;
+      padding-left: 12px;
+
+      .remove-option-button {
+        padding: 3px;
+      }
+    }
+  }
+}
