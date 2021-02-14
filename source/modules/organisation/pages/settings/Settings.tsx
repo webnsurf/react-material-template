@@ -48,7 +48,7 @@ export const SettingsPage: FC = () => {
                   <div className="icon">
                     <Icon type="delete" />
                   </div>
-                  Remove organisation
+                  Delete
                 </Button>
               </div>
             </Popconfirm>
