@@ -109,17 +109,21 @@ tr.sec-table-row {
     line-height: $lineHeight;
 
     &.editable {
-      padding-right: 34px;
+      padding-right: 38px;
       position: relative;
 
       .actions {
         position: absolute;
-        top: 3px;
-        right: 0;
+        top: 5px;
+        right: 5px;
 
         button {
           padding: 5px;
         }
+      }
+
+      &.removable {
+        padding-right: 73px;
       }
     }
 
@@ -133,7 +137,7 @@ tr.sec-table-row {
   &.in-edit {
     .table-cell {
       &.editable {
-        padding-right: 68px;
+        padding-right: 73px;
       }
     }
   }
@@ -143,4 +147,8 @@ tr.sec-table-row {
       border-bottom: 0;
     }
   }
+}
+
+tr.sec-loading td {
+  padding: 0 !important;
 }

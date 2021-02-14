@@ -11,11 +11,7 @@ interface RenderProps<DataType> {
   form?: FormApi<FormData<DataType>>;
 }
 
-export interface InternalData {
-  key: string;
-}
-
-export type FormData<DataType> = { items: (DataType & InternalData)[] };
+export type FormData<DataType> = { items: DataType[] };
 
 export interface TableColumn<DataType = any> extends TableCellProps {
   title?: string;
@@ -25,13 +21,11 @@ export interface TableColumn<DataType = any> extends TableCellProps {
   maxWidth?: number | string;
   render?: (value: any, props: RenderProps<DataType>) => ReactNode;
   tooltip?: (value: any, props: RenderProps<DataType>) => string;
+  link?: (value: any, props: RenderProps<DataType>) => string;
   ellipsis?: boolean;
   inputProps?: Omit<InputProps, 'name'>;
   indexColumn?: boolean;
+  editable?: boolean;
 }
 
 export type TableDataType = Record<string, any>;
-
-export type TableFieldProps<FieldProps> = FieldProps & {
-  rowIndex: number;
-};

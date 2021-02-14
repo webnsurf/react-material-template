@@ -8,7 +8,6 @@ import MatTableRow from '@material-ui/core/TableRow';
 import { Form, FormRenderProps } from 'react-final-form';
 import { FormApi } from 'final-form';
 
-import { getNewOption as createNewOption, removeOptionKey } from 'utils/form';
 import { notifications } from 'utils/notifications';
 import { resolveError } from 'api/utils';
 
@@ -16,39 +15,34 @@ import { defaultSubscriptionWithValues } from '../../forms/form';
 import { IconButton, IconButtonProps } from '../button';
 import { Spinner } from '../spinner';
 import { NoData } from '../no-data';
-import { TableColumn, FormData, InternalData, TableDataType } from './types';
+import { TableColumn, FormData, TableDataType } from './types';
 import { getColumnKey, TableRow, TableRowProps } from './TableRow';
-
-const mapOption = <DataType extends TableDataType>(data: DataType) =>
-  createNewOption(data) as DataType & InternalData;
-
-const mapOptions = <DataType extends TableDataType>(data?: DataType[] | null) =>
-  data?.map(mapOption) || [];
 
 const TableComponent = <DataType extends TableDataType>({
   className: passedClassName,
   columns,
-  data: initialData,
-  rowKey = 'key',
-  size = 'medium',
   loading,
+  data: initialData,
+  size = 'medium',
+  rowKey = 'id',
   addButtonLabel = 'Add another',
   type = 'primary',
   throwOnError,
   getNewOption,
   onSubmit,
+  onRowSubmit,
   resolveRowClassName,
   onAddNew,
+  onRemove,
   onEditStart,
   ...props
 }: TableProps<DataType>) => {
-  const [data, setData] = useState(() => ({ items: mapOptions(initialData) }));
+  const [data, setData] = useState(() => ({ items: initialData || [] }));
   const handleSubmit = useCallback(
     async (formData: FormData<DataType>, form: FormApi<FormData<DataType>>) => {
       if (onSubmit) {
         try {
-          const cleanData = formData.items.map(removeOptionKey);
-          await onSubmit(cleanData as any, form);
+          await onSubmit(formData.items, form);
         } catch (error) {
           if (throwOnError) {
             throw error;
@@ -62,23 +56,15 @@ const TableComponent = <DataType extends TableDataType>({
   );
 
   useEffect(() => {
-    setData({ items: mapOptions(initialData) });
+    setData({ items: initialData || [] });
   }, [initialData]);
 
-  const noData = (
-    <tr>
-      <td colSpan={columns.length}>
-        <NoData align="center" label={loading ? 'Loading data...' : undefined} />
-      </td>
-    </tr>
-  );
   const className = classnames('sec-table', passedClassName, type, size);
-
   const renderTable = ({ form, values, invalid, submitting }: RendererProps<DataType>) => {
     const tableData = values?.items || data.items;
     const addNewRow = () => {
       if (getNewOption && form) {
-        form.change('items', [...tableData, mapOption(getNewOption())]);
+        form.change('items', [...tableData, getNewOption()]);
 
         if (onAddNew) {
           onAddNew();
@@ -97,6 +83,39 @@ const TableComponent = <DataType extends TableDataType>({
           form.submit();
         }
       }
+    };
+    const renderBody = () => {
+      if (!tableData?.length) {
+        return (
+          <tr>
+            <td colSpan={columns.length}>
+              <NoData align="center" label={loading ? 'Loading data...' : undefined} />
+            </td>
+          </tr>
+        );
+      }
+
+      return tableData.map((rowData, index) => {
+        const initialRowData = data.items.find(item => rowData[rowKey] === item[rowKey]);
+
+        return (
+          <TableRow
+            key={rowData[rowKey]}
+            rowKey={rowKey}
+            data={rowData}
+            columns={columns}
+            initialData={initialRowData}
+            isNewOption={!initialRowData}
+            resolveRowClassName={resolveRowClassName}
+            onRemove={onRemove || (getNewOption && removeRow)}
+            onEditStart={onEditStart}
+            onSubmit={onRowSubmit}
+            className={type}
+            index={index}
+            form={form}
+          />
+        );
+      });
     };
 
     return (
@@ -121,29 +140,7 @@ const TableComponent = <DataType extends TableDataType>({
             </MatTableRow>
           </TableHead>
 
-          <TableBody>
-            {!tableData?.length
-              ? noData
-              : tableData.map((rowData, index) => {
-                  const initialRowData = data.items.find(({ key }) => rowData.key === key);
-
-                  return (
-                    <TableRow
-                      key={rowData[rowKey]}
-                      data={rowData}
-                      columns={columns}
-                      initialData={initialRowData}
-                      isNewOption={!initialRowData}
-                      resolveRowClassName={resolveRowClassName}
-                      onRemove={getNewOption && removeRow}
-                      className={type}
-                      index={index}
-                      form={form}
-                      onEditStart={onEditStart}
-                    />
-                  );
-                })}
-          </TableBody>
+          <TableBody>{renderBody()}</TableBody>
         </MatTable>
 
         {getNewOption && (
@@ -184,6 +181,8 @@ export interface TableProps<DataType extends TableDataType = any>
   addButtonLabel?: IconButtonProps['label'];
   getNewOption?: () => DataType;
   onSubmit?: (data: DataType[], form: FormApi<FormData<DataType>>) => any;
+  onRowSubmit?: TableRowProps<DataType>['onSubmit'];
+  onRemove?: (id: string) => any;
   resolveRowClassName?: TableRowProps<DataType>['resolveRowClassName'];
   onEditStart?: TableRowProps<DataType>['onEditStart'];
   onAddNew?: () => any;
