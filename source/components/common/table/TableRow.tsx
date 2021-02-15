@@ -212,6 +212,7 @@ const TableRowComponent = <DataType extends TableDataType>({
                       </span>
                     }
                     onConfirm={handleRemove}
+                    position="leftTop"
                     okText="Yes"
                   >
                     <IconButton

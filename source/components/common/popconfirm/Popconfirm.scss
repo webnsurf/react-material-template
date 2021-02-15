@@ -1,19 +1,222 @@
 @import '/source/scss-variables/colors';
+@import '/source/scss-variables/vars';
+
+#popconfirm {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
 
 .sec-popconfirm {
-  button:last-of-type {
-    background: $primary;
-    border-color: $primary;
+  z-index: 1060;
+  position: absolute;
+  transition: opacity $transition, transform $transition;
+
+  .popconfirm-content {
+    color: $primaryText;
+    background: #fff;
+    border-radius: 2px;
+    padding: 15px;
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   }
 
-  button:first-of-type:hover {
-    border-color: $primary;
-    color: $primary;
-  }
+  .popconfirm-title {
+    display: flex;
 
-  &.no-buttons {
-    .ant-popover-message {
-      padding: 0;
+    svg {
+      margin-right: 5px;
+      margin-top: -1px;
     }
+  }
+
+  .popconfirm-actions {
+    justify-content: flex-end;
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+
+    button {
+      height: 25px;
+    }
+  }
+
+  &.top,
+  &.topLeft,
+  &.topRight {
+    padding-bottom: 10px;
+  }
+
+  &.top {
+    transform-origin: bottom center;
+  }
+
+  &.topLeft {
+    transform-origin: bottom left;
+  }
+
+  &.topRight {
+    transform-origin: bottom right;
+  }
+
+  &.bottom,
+  &.bottomLeft,
+  &.bottomRight {
+    padding-top: 10px;
+  }
+
+  &.bottom {
+    transform-origin: top center;
+  }
+
+  &.bottomLeft {
+    transform-origin: top left;
+  }
+
+  &.bottomRight {
+    transform-origin: top right;
+  }
+
+  &.left,
+  &.leftTop,
+  &.leftBottom {
+    padding-right: 10px;
+  }
+
+  &.left {
+    transform-origin: right center;
+  }
+
+  &.leftTop {
+    transform-origin: right top;
+  }
+
+  &.leftBottom {
+    transform-origin: right bottom;
+  }
+
+  &.right,
+  &.rightTop,
+  &.rightBottom {
+    padding-left: 10px;
+  }
+
+  &.right {
+    transform-origin: left center;
+  }
+
+  &.rightTop {
+    transform-origin: left top;
+  }
+
+  &.rightBottom {
+    transform-origin: left bottom;
+  }
+
+  &.fadde-enter {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  &.fadde-enter-active {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &.fadde-exit {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &.fadde-exit-active {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.sec-popconfirm-arrow {
+  position: absolute;
+  display: block;
+  width: 8.48528137px;
+  height: 8.48528137px;
+  background: transparent;
+  border-style: solid;
+  border-width: 4.24264069px;
+  transform: rotate(45deg);
+
+  &.top,
+  &.topLeft,
+  &.topRight {
+    bottom: 6px;
+    border-top-color: transparent;
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+    border-left-color: transparent;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07);
+  }
+
+  &.bottom,
+  &.bottomLeft,
+  &.bottomRight {
+    top: 6px;
+    border-top-color: #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: #fff;
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.06);
+  }
+
+  &.top,
+  &.bottom {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  &.topLeft,
+  &.bottomLeft {
+    left: 16px;
+  }
+
+  &.topRight,
+  &.bottomRight, {
+    right: 16px;
+  }
+
+  &.left,
+  &.leftTop,
+  &.leftBottom {
+    right: 6px;
+    border-top-color: #fff;
+    border-right-color: #fff;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
+  }
+
+  &.right,
+  &.rightTop,
+  &.rightBottom {
+    left: 6px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #fff;
+    border-left-color: #fff;
+    box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
+  }
+
+  &.left,
+  &.right {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  &.leftTop,
+  &.rightTop {
+    top: 12px;
+  }
+
+  &.leftBottom,
+  &.rightBottom {
+    bottom: 12px;
   }
 }

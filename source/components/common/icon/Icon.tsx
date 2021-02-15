@@ -23,6 +23,7 @@ import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NotesIcon from '@material-ui/icons/Notes';
+import InfoIcon from '@material-ui/icons/Error';
 
 import { PalleteColor, resolvePalleteColor, resolvePalleteContrastColor } from 'theme';
 
@@ -48,6 +49,7 @@ const icons = {
   home: HomeOutlinedIcon,
   edit: EditOutlinedIcon,
   notes: NotesIcon,
+  info: InfoIcon,
 };
 
 export const Icon: FC<IconProps> = ({

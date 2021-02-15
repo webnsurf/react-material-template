@@ -40,7 +40,7 @@ export const SettingsPage: FC = () => {
             <Popconfirm
               title="Are you sure you want to remove this organisation?"
               onConfirm={handleDelete}
-              placement="bottomLeft"
+              position="bottomLeft"
               okText="Yes"
             >
               <div className="link">

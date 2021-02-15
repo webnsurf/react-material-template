@@ -1,27 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const ts = require('typescript');
-
-const PATHS = {
-  entry: path.join(__dirname, '../source/index'),
-  source: path.join(__dirname, '../source'),
-  dist: path.join(__dirname, '../dist'),
-  nodeModules: path.join(__dirname, '../node_modules'),
-};
-
-const themePath = path.join(PATHS.source, 'theme.js');
-const themeFile = fs.readFileSync(path.join(PATHS.source, 'theme.ts'), 'utf-8');
-fs.writeFileSync(themePath, ts.transpile(themeFile));
-
-/** @type { import('../source/theme') } */
-const theme = require(themePath); // eslint-disable-line import/no-dynamic-require
 
 /** @type { () => import('webpack').Configuration } */
-module.exports = (env) => ({
+module.exports = env => ({
   entry: path.resolve(__dirname, '../source/index'),
   resolve: {
     modules: ['node_modules', path.resolve(__dirname, '../source')],
@@ -57,32 +41,6 @@ module.exports = (env) => ({
           },
           {
             loader: 'sass-loader',
-          },
-        ],
-      },
-      {
-        test: /\.less$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            ...(env === 'development' && { options: { sourceMap: true } }),
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-                modifyVars: {
-                  'primary-color': theme.colors.primary,
-                  'text-color': theme.colors.text,
-                  'error-color': theme.colors.error,
-                  'link-color': 'none',
-                  'link-hover-color': 'none',
-                  'link-active-color': 'none',
-                },
-              },
-            },
           },
         ],
       },

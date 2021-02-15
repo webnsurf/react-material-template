@@ -90,7 +90,9 @@ export const RoleColumn: FC<RoleColumnProps> = ({ reLoadUsers, id: userId, email
           </span>
         }
         disabled={!canEditUsers || !isSameUser}
+        className="sec-same-user-role"
         disableButtons
+        width={270}
       >
         <div className="selecotr-wrapper">
           <UserRoleSelector
@@ -120,8 +122,7 @@ export const RoleColumn: FC<RoleColumnProps> = ({ reLoadUsers, id: userId, email
             </span>
           }
           onConfirm={handleDeleteUser}
-          arrowPointAtCenter={false}
-          placement="rightTop"
+          position="leftTop"
         >
           <IconButton type="delete" color="error" className="delete" title={`Delete ${email}`} />
         </Popconfirm>
