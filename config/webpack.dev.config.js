@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const mainConfig = require('./webpack.config')('development');
+const { getConfig, PATHS } = require('./webpack.config');
+
+const mainConfig = getConfig('development');
 
 /** @type { import('webpack').Configuration } */
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
   mode: 'development',
 
   output: {
-    path: path.resolve(__dirname, '../dist/'),
+    path: PATHS.dist,
     publicPath: '/',
     filename: 'bundle.js',
   },
@@ -49,5 +49,5 @@ module.exports = {
     }),
   },
 
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
 };
